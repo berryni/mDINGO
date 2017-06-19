@@ -1,17 +1,17 @@
-\name{DINGO-package}
-\alias{DINGO-package}
-\alias{DINGO}
+\name{mDINGO-package}
+\alias{mDINGO-package}
+\alias{mDINGO}
 \docType{package}
 \title{
-DINGO: Differential Network Analysis in Genomics
+mDINGO: Microbial Differential Network Analysis in Genomics
 }
 \description{
-This packages jointly estimates group specific partial correlations.
+This packages jointly estimates group specific partial correlations for compositional microbiome data.
 }
 \details{
 This packages jointly estimates group specific partial correlations.
 }
 \author{
-Min Jin Ha, Veerabhadran Baladandayuthapani, and Kim-Anh Do
+Nick Berry -- originally Min Jin Ha, Veerabhadran Baladandayuthapani, and Kim-Anh Do
 }
 \keyword{ package }
