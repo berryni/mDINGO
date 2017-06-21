@@ -5,7 +5,8 @@ Version: 1.1
 Date: 2014-06-30
 Author: Nick Berry <berryni@iastate.edu>/ Min Jin Ha <mjha@mdanderson.org>
 Maintainer: Nick Berry <berryni@iastate.edu>
-Depends: mvtnorm, glasso, parallel, SpiecEasi, igraph
+Depends: mvtnorm, glasso, SpiecEasi, igraph
+Suggests: parallel
 Description: Fitting covariate dependent partial correlation matrices
 License: GPL-2
 LazyLoad: yes

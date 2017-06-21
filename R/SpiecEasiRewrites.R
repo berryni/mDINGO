@@ -11,7 +11,7 @@ igraph2prec = function (Graph, posThetaLims = c(2, 3), negThetaLims = -posThetaL
   negThetaLims <- sort(negThetaLims)
   Theta <- Graph + diag(n)
   degVec <- colSums(Graph)
-  utri <- triu(Theta)
+  utri <- SpiecEasi::triu(Theta)
   nzind <- which(utri != 0)
   if (length(posThetaLims) > 2 || length(negThetaLims) > 2) 
     stop("theta_max and theta_min should be a numeric vector of length 1 or 2")
@@ -38,3 +38,45 @@ igraph2prec = function (Graph, posThetaLims = c(2, 3), negThetaLims = -posThetaL
   Theta <- Theta + diagConst * diag(n)
   return(Theta)
 }
+
+.binSearchCond <- function(Theta, condTheta, numBinSearch, epsBin) {
+  # Internal function that determines the constant in the diagonal to satisfy the
+  # condition constraint on the Precision/Covariance matrix
+  
+  n <- nrow(Theta)
+  currCondTheta <- kappa(Theta)
+  if (currCondTheta < condTheta) {
+    # Max entry in the diagonal (lower bound)
+    currLB   <- -max(diag(Theta))
+    stepSize <- currLB+.Machine$double.eps
+    
+    while (currCondTheta < condTheta) {
+      currCondTheta <- kappa(Theta+stepSize*diag(n))
+      stepSize      <- stepSize/2
+    }
+    currUB <- stepSize
+  } else {
+    currLB <- 0
+    stepSize = 0.1
+    
+    while (currCondTheta > condTheta) {
+      currCondTheta <- kappa(Theta + stepSize*diag(n))
+      stepSize      <- 2*stepSize
+    }
+    currUB <- stepSize
+  }
+  
+  for (i in 1:numBinSearch) {
+    diagConst <- (currUB+currLB)/2
+    currCondTheta <- kappa(Theta+diagConst*diag(n))
+    
+    if (currCondTheta < condTheta) currUB <- diagConst
+    else currLB <- diagConst
+    
+    if (abs(currCondTheta-condTheta)<epsBin) break
+  }
+  diagConst
+}
+
+
+
