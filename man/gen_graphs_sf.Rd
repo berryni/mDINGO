@@ -22,7 +22,7 @@ Use igraph to generate synthetic underlying scale-free graph structure for simul
     Defaults to .05. Probability of altering each edge not in the graph subset that is determined to be the hub.
 }
 \item{hubsize}{
-    Defaults to \frac{1}{3}. Must be between 0 and 1. Dictates size of disease generating hub node. \frac{1}{3} indicates that at least \frac{1}{3} of the entire graph must be detached from the hub node. Larger number -> smaller hub node.
+    Defaults to 1/3. Must be between 0 and 1. Dictates size of disease generating hub node. 1/3 indicates that at least 1/3 of the entire graph must be detached from the hub node. Larger number -> smaller hub node.
 }
 }
 \value{
