@@ -1,10 +1,10 @@
-Package: DINGOse
+Package: mDINGO
 Type: Package
 Title: DINGO: Differential Network Analysis in Genomics
 Version: 1.1
 Date: 2014-06-30
-Author: Min Jin Ha <mjha@mdanderson.org>
-Maintainer: Min Jin Ha <mjha@mdanderson.org>
+Author: Nick Berry <berryni@iastate.edu>/ Min Jin Ha <mjha@mdanderson.org>
+Maintainer: Nick Berry <berryni@iastate.edu>
 Depends: mvtnorm, glasso, parallel, SpiecEasi
 Description: Fitting covariate dependent partial correlation matrices
 License: GPL-2
