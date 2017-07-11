@@ -77,7 +77,7 @@ dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se
      if (verbose) cat("Bootstrap scoring is done at", date(),"\n")
      timer[3] <- proc.time()[3] - timer[2] - ptm
   
-     return(list(genepair = boot.fit$genepair,levels.x = boot.fit$levels.z,R1=boot.fit$R1,R2=boot.fit$R2,boot.diff=boot.fit$boot.diff,diff.score=boot.fit$diff.score,P=P,Q=fit.g$B,Psi=fit.g$A, se.res = list(with(fit.se1, refit, opt.lambda, opt.sparsity, opt.icov)), step.times=timer))
+     return(list(genepair = boot.fit$genepair,levels.x = boot.fit$levels.z,R1=boot.fit$R1,R2=boot.fit$R2,boot.diff=boot.fit$boot.diff,diff.score=boot.fit$diff.score,P=P,Q=fit.g$B,Psi=fit.g$A, se.res = list(refit = fit.se1$refit, opt.lambda = fit.se1$opt.lambda, opt.sparsity = fit.se1$opt.sparsity, opt.icov = fit.se1$opt.icov), step.times=timer))
    }else{
      w.mat = which(upper.tri(Omega),arr.ind=T)
      genepair = data.frame(gene1 = colnames(dat)[w.mat[, 1]], gene2 = colnames(stddat)[w.mat[, 2]])
@@ -86,7 +86,7 @@ dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se
      levels.x = unique(x)
      R1 = -scaledMat(solve(Sigmax(Q = fit.g$B, P = P, Psi = fit.g$A, x = c(1, levels.x[1]))))[w.upper]
      R2 = -scaledMat(solve(Sigmax(Q = fit.g$B, P = P, Psi = fit.g$A, x = c(1, levels.x[2]))))[w.upper]
-     return(list(genepair = genepair,levels.x = levels.x,R1=R1,R2=R2,boot.diff=NULL,diff.score=NULL,P=P,Q=fit.g$B,Psi=fit.g$A, se.res = list(with(fit.se1, refit, opt.lambda, opt.sparsity, opt.icov)), step.times=timer))
+     return(list(genepair = genepair,levels.x = levels.x,R1=R1,R2=R2,boot.diff=NULL,diff.score=NULL,P=P,Q=fit.g$B,Psi=fit.g$A, se.res = list(refit = fit.se1$refit, opt.lambda = fit.se1$opt.lambda, opt.sparsity = fit.se1$opt.sparsity, opt.icov = fit.se1$opt.icov), step.times=timer))
    }
 }
 
