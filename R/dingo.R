@@ -23,9 +23,9 @@ dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se
     w.upper = which(upper.tri(II))
   
     # data standardization
-    mdat = apply(dat,2,mean)
-    sdat = apply(dat,2,sd)
-    stddat = t((t(dat) - mdat)/sdat)
+   # mdat = apply(dat,2,mean)
+  #  sdat = apply(dat,2,sd)
+  #  stddat = t((t(dat) - mdat)/sdat)
   
     #######################################
     # fit global network using spiec-easi #
@@ -58,6 +58,13 @@ dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se
    ######################################
    # fit local group-specific component #
    ######################################
+   
+   #Transform data to reals space before EM:
+   datT = t(clr(t(dat)))
+   mdat = apply(datT,2,mean)
+   sdat = apply(datT,2,sd)
+   stddat = t((t(datT) - mdat)/sdat)
+   
    tY.org = stddat %*% (II-t(P))
    mdat = apply(tY.org,2,mean)
    sdat = apply(tY.org,2,sd)
