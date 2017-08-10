@@ -22,7 +22,7 @@ graphList2precs = function(graphList, posThetaLims = c(2, 3), negThetaLims = -po
   rands[boolind] <- mapToRange(rands[boolind], posThetaLims)
   rands[!boolind] <- mapToRange(rands[!boolind], negThetaLims)
   utri[nzind] <- rands
-  #####Theta <- triu2diag(utri, 1) <- this wasn't working. The next 2 lines do what the function did I think.
+  #####Theta <- triu2diag(utri, 1) <- this wasn't working. The next 3 lines do what the function did I think.
   Theta[upper.tri(Theta)] = utri
   Theta[lower.tri(Theta)] = t(Theta)[lower.tri(Theta)]
   diag(Theta) = 1
@@ -65,14 +65,14 @@ graphList2precs = function(graphList, posThetaLims = c(2, 3), negThetaLims = -po
     disTheta <- disTheta + max(abs(disminEig), abs(conminEig)) * diag(n)
   disdiagConst <- .binSearchCond(disTheta, targetCondition, numBinSearch, 
                               epsBin)
-  if (minEig < 0.01) 
+  if (conminEig < 0.01) 
     conTheta <- conTheta + max(abs(disminEig), abs(conminEig)) * diag(n)
   condiagConst <- .binSearchCond(conTheta, targetCondition, numBinSearch, 
                                  epsBin)
   
   disTheta = disTheta + max(disdiagConst, condiagConst) * diag(n)
   conTheta = conTheta + max(disdiagConst, condiagConst) * diag(n)
-  return(list(disTheta, conTheta))
+  return(list(disPrec = disTheta, conPrec = conTheta, globalPrec = Theta))
 }
 
 igraph2prec = function (Graph, posThetaLims = c(2, 3), negThetaLims = -posThetaLims, 
