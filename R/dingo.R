@@ -1,4 +1,4 @@
-dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se.sel.criterion = "stars", se.nlambda = 15) {
+dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se.fix = NA, se.sel.criterion = "stars", se.nlambda = 15, se.rep.num = 20) {
 #  Input:
 ####  - dat : n by p response data
 ####  - x : length n covariate vector
@@ -45,8 +45,10 @@ dingoSE <- function(dat,x,rhoarray=NULL,diff.score=T,B=100,verbose=T,cores=1, se
    # rho = rhoarray[which.min(BIC)]
    # fit.gl1 = glasso(S,rho=rho)
    # fit.gl2 = glasso(S,rho=rho,w.init=fit.gl1$w,wi.init=fit.gl1$wi)
-  
-   fit.se1 = spiec.easi(dat, method = 'glasso', nlambda = se.nlambda, lambda.min.ratio = 1e-2, sel.criterion = se.sel.criterion)
+   if(is.na(se.fix))
+      fit.se1 = spiec.easi(dat, method = 'glasso', nlambda = se.nlambda, lambda.min.ratio = 1e-2, sel.criterion = se.sel.criterion, icov.select.params=list(rep.num=se.rep.num))
+   else
+     fit.se1 = se.fix
    Omega = as.matrix(fit.se1$opt.icov)
    diag.Omega = diag(Omega)
    P = -Omega/diag.Omega

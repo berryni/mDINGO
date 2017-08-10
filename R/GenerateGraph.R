@@ -69,9 +69,10 @@ gen_graphs_sf = function(numNodes, edgePower = 1, hubgraphchangeprop = .6, nonhu
   return(retList)
 }
 
-plotGraphList = function(graphList)
+plotGraphList = function(graphList, l_fr = NA)
 {
-  l_fr = layout_with_fr(graphList$disease)
+  if(is.na(l_fr))
+    l_fr = layout_with_fr(graphList$disease)
   plot(graphList$disease, vertex.size= 0, main = "Disease Graph", layout = l_fr, vertex.label = NA)
   plot(graphList$change, vertex.size= 0, main = "Change Graph", layout = l_fr, vertex.label = NA)
   plot(graphList$control, vertex.size= 0, main = "Control Graph", layout = l_fr, vertex.label = NA)

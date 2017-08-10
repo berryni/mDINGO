@@ -42,7 +42,9 @@ graphList2precs = function(graphList, posThetaLims = c(2, 3), negThetaLims = -po
   rands[boolind] <- mapToRange(rands[boolind], posThetaLims)
   rands[!boolind] <- mapToRange(rands[!boolind], negThetaLims)
   disutri[disnzind] = rands[1:length(disnzind)]
+  conutri[disnzind] = -rands[1:length(disnzind)]
   conutri[connzind] = rands[(length(disnzind)+1):(length(disnzind)+length(connzind))]
+  disutri[connzind] = -rands[(length(disnzind)+1):(length(disnzind)+length(connzind))]
   
   disTheta[upper.tri(disTheta)] = disutri
   disTheta[lower.tri(disTheta)] = t(disTheta)[lower.tri(disTheta)]
@@ -51,18 +53,20 @@ graphList2precs = function(graphList, posThetaLims = c(2, 3), negThetaLims = -po
   conTheta[lower.tri(conTheta)] = t(conTheta)[lower.tri(conTheta)]
   diag(conTheta) = 1
   
-  eigVals <- eigen(disTheta)$values
-  minEig <- min(eigVals)
-  maxEig <- max(eigVals)
-  if (minEig < 0.01) 
-    disTheta <- disTheta + abs(minEig) * diag(n)
+  diseigVals <- eigen(disTheta)$values
+  coneigVals <- eigen(conTheta)$values
+  
+  disminEig <- min(diseigVals)
+  dismaxEig <- max(diseigVals)
+  conminEig = min(coneigVals)
+  conmaxEig = max(coneigVals)
+  
+  if (disminEig < 0.01) 
+    disTheta <- disTheta + max(abs(disminEig), abs(conminEig)) * diag(n)
   disdiagConst <- .binSearchCond(disTheta, targetCondition, numBinSearch, 
                               epsBin)
-  eigVals <- eigen(conTheta)$values
-  minEig <- min(eigVals)
-  maxEig <- max(eigVals)
   if (minEig < 0.01) 
-    conTheta <- conTheta + abs(minEig) * diag(n)
+    conTheta <- conTheta + max(abs(disminEig), abs(conminEig)) * diag(n)
   condiagConst <- .binSearchCond(conTheta, targetCondition, numBinSearch, 
                                  epsBin)
   
